@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <title>Smoothing Images with OpenCV</title>
 </head>
+
 <body>
-    <h1>lalala</h1>
+    <div id="app" class="mx-auto w-fit p-5">
+        <h1 class="font-bold text-xl mx-auto w-fit">Smoothing with OpenCV</h1>
+        <br>
+        <img-result title="Original">
+            <img class="rounded-lg w-40" :src="img_url" alt="img">
+        </img-result>
+        <br>
+        <div class="flex gap-2">
+            <img-result title="Media">
+                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+            </img-result>
+            <img-result title="Gauss">
+                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+            </img-result>
+            <img-result title="Time">
+                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+            </img-result>
+            <img-result title="Otro">
+                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+            </img-result>
+        </div>
+        <br>
+        <div>
+            <p class="font-bold text-lg">Controls</p>
+            <br>
+            <div class="flex gap-2">
+                <input @change="loadimg" class="p-2 bg-lime-300 rounded-lg" type="file">
+                <button class="p-2 bg-amber-300 rounded-lg hover:bg-amber-500">Go</button>
+            </div>
+            <br>
+            <div>
+                inputs
+            </div>
+        </div>
+    </div>
+    <script src="./js/main.js"></script>
+    <script src="./js/components.js"></script>
+    <script>
+        const mountedApp = app.mount("#app");
+    </script>
+
 </body>
+
 </html>
