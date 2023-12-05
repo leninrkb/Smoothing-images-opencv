@@ -13,38 +13,37 @@
     <div id="app" class="mx-auto w-fit p-5">
         <h1 class="font-bold text-xl mx-auto w-fit">Smoothing with OpenCV</h1>
         <br>
+        <!-- original -->
         <img-result title="Original">
             <img id="img_original" class="rounded-lg w-40" :src="img_url" alt="img">
         </img-result>
         <br>
+        <!-- results -->
         <div class="flex gap-2">
             <img-result title="Media">
-                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+                <canvas id="media" class="rounded-lg w-40"></canvas>
             </img-result>
-            <img-result title="Gauss">
-                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
-            </img-result>
-            <img-result title="Time">
-                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
-            </img-result>
-            <img-result title="Otro">
-                <img class="rounded-lg w-40" src="./img/lustre.png" alt="">
+            <img-result title="Mediana">
+                <canvas id="mediana" class="rounded-lg w-40"></canvas>
             </img-result>
         </div>
         <br>
+        <!-- comtrols -->
         <div>
             <p class="font-bold text-lg">Controls</p>
             <br>
             <div class="flex gap-2">
                 <input @change="loadimg" class="p-2 bg-lime-300 rounded-lg" type="file">
-                <button class="p-2 bg-amber-300 rounded-lg hover:bg-amber-500">Go</button>
+                <button @click="do_something" class="p-2 bg-amber-300 rounded-lg hover:bg-amber-500">Go</button>
             </div>
             <br>
             <div>
-                inputs
+                <input-value @value="media_kernel_size=$event" title="Media kernel size" step="2"></input-value>
+                <input-value @value="mediana_kernel_size=$event" title="Mediana kernel size" step="2"></input-value>
             </div>
         </div>
     </div>
+    <script src="./js/opencv.js"></script>
     <script src="./js/main.js"></script>
     <script src="./js/components.js"></script>
     <script>
