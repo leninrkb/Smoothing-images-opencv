@@ -6,7 +6,8 @@ const app = Vue.createApp({
 			median_kernel_size: 1,
 			gauss_kernel_size: 1,
 			img_element: null,
-			pnoise: 0
+			pnoise: 0,
+			rgb: true
 		}
 	},
 	mounted(){
@@ -25,17 +26,36 @@ const app = Vue.createApp({
 		},
 		do_something(){
 			let img = cv.imread(this.img_element);
+			if (this.rgb) {
+				this.smoothing_rgb(img);
+			}else{
+				this.smoothing_gray(img);
+			}
+			
+		},
+		smoothing_rgb(img) {
 			let chanels = new cv.MatVector();
 			cv.split(img, chanels);
 			r = chanels.get(0);
 			this.noise(r);
 			cv.merge(chanels, img);
-			cv.imshow("noise",img);
+			cv.imshow("noise", img);
 			this.mean(img);
 			this.median(img);
 			this.gauss(img);
 			this.fourier(img);
 			img.delete();
+		},
+		smoothing_gray(img) {
+			let gray = new cv.Mat();
+			cv.cvtColor(img, gray, cv.COLOR_RGBA2GRAY);
+			this.noise(gray);
+			cv.imshow("noise", gray);
+			this.mean(gray);
+			this.median(gray);
+			this.gauss(gray);
+			this.fourier(gray);
+			gray.delete();
 		},
 		noise(img){
 			p = 1 - this.pnoise;

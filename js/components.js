@@ -10,7 +10,7 @@ app.component("img-result", {
 });
 
 app.component("input-value", {
-    props:["title","step","min"],
+    props:["title","step","min","type"],
     data(){
         return{
             value: this.min
@@ -21,7 +21,7 @@ app.component("input-value", {
             <div>   
                 <label for="name" class="font-semibold">{{title}}</label>
                 <br>
-                <input @change="changed" class="bg-gray-200 rounded-lg p-2" name="name" v-model="value" type="number" :min="min" max="99" :step="step">
+                <input @change="changed" class="bg-gray-200 rounded-lg p-2" name="name" v-model="value" :type="type" :min="min" max="99" :step="step">
             </div>
         `,
     methods:{
