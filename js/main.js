@@ -63,8 +63,7 @@ const app = Vue.createApp({
 				for (let j = 0; j < img.cols; j++) {
 					let probability2AddNoise = Math.random();
 					if (probability2AddNoise > p) {
-						let randomValue = Math.random();
-						img.ucharPtr(i, j)[0] *= randomValue;	
+						img.ucharPtr(i, j)[0] *= 0;	
 					}
 					
 				}
@@ -136,7 +135,7 @@ const app = Vue.createApp({
 			let dst = new cv.Mat();
 			let M = src.rows;
 			let N = src.cols;
-			let planes = new cv.MatVector(); // Crea un MatVector en lugar de una matriz
+			let planes = new cv.MatVector();
 			let plane1 = src.clone();
 			let plane2 = new cv.Mat.zeros(src.size(), cv.CV_32F);
 			planes.push_back(plane1);
@@ -149,12 +148,9 @@ const app = Vue.createApp({
 			cv.magnitude(planes.get(0), planes.get(1), magI);
 			magI.convertTo(magI, cv.CV_8U);
 			cv.normalize(magI, magI, 0, 255, cv.NORM_MINMAX, cv.CV_8U);
-			// Supongamos que has identificado que el ruido se encuentra en una banda específica
 			let noiseBand = { start: 10, end: 20 };
-			// Recorremos la matriz de la Transformada de Fourier
 			for (let i = 0; i < magI.rows; i++) {
 				for (let j = 0; j < magI.cols; j++) {
-					// Si estamos en la banda de ruido, ponemos a cero este valor
 					if (i >= noiseBand.start && i <= noiseBand.end) {
 						magI.ucharPtr(i, j)[0] = 0;
 					}
@@ -166,7 +162,6 @@ const app = Vue.createApp({
 			cv.normalize(planes.get(1), dst, 0, 255, cv.NORM_MINMAX, cv.CV_8U);
 			cv.imshow("fourier", dst);
 			dst.delete();
-			// No olvides liberar la memoria de los Mats y MatVector cuando ya no los necesites
 			src.delete();
 			plane1.delete();
 			plane2.delete();
