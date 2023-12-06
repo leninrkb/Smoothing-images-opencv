@@ -14,17 +14,25 @@
         <h1 class="font-bold text-xl mx-auto w-fit">Smoothing with OpenCV</h1>
         <br>
         <!-- original -->
-        <img-result title="Original">
+        <img-result class="w-fit mx-auto" title="Original">
             <img id="img_original" class="rounded-lg w-40" :src="img_url" alt="img">
         </img-result>
         <br>
         <!-- results -->
         <div class="flex gap-2">
-            <img-result title="Media">
-                <canvas id="media" class="rounded-lg w-40"></canvas>
+            <img-result title="Noise">
+                <canvas id="noise" class="rounded-lg w-40"></canvas>
             </img-result>
-            <img-result title="Mediana">
-                <canvas id="mediana" class="rounded-lg w-40"></canvas>
+            <img-result title="Mean">
+                <canvas id="mean" class="rounded-lg w-40"></canvas>
+            </img-result>
+            <img-result title="Median">
+                <canvas id="median" class="rounded-lg w-40"></canvas>
+            </img-result>
+            <img-result title="Gauss">
+                <canvas id="gauss" class="rounded-lg w-40"></canvas>
+            </img-result><img-result title="Fourier">
+                <canvas id="fourier" class="rounded-lg w-40"></canvas>
             </img-result>
         </div>
         <br>
@@ -37,9 +45,11 @@
                 <button @click="do_something" class="p-2 bg-amber-300 rounded-lg hover:bg-amber-500">Go</button>
             </div>
             <br>
-            <div>
-                <input-value @value="media_kernel_size=$event" title="Media kernel size" step="2"></input-value>
-                <input-value @value="mediana_kernel_size=$event" title="Mediana kernel size" step="2"></input-value>
+            <div class="flex gap-3">
+                <input-value @value="mean_kernel_size=$event" title="Mean kernel size" step="2" min="1"></input-value>
+                <input-value @value="median_kernel_size=$event" title="Median kernel size" step="2" min="1"></input-value>
+                <input-value @value="gauss_kernel_size=$event" title="Gauss kernel size" step="2" min="1"></input-value>
+                <input-value @value="pnoise=$event" title="Probability to add noise" step="0.1" min="0"></input-value>
             </div>
         </div>
     </div>
