@@ -54,7 +54,12 @@ const app = Vue.createApp({
 			this.mean(gray);
 			this.median(gray);
 			this.gauss(gray);
-			this.fourier(gray);
+			// this.fourier(gray);
+			this.robert(gray);
+			this.prewitt(gray);
+			this.sobel(gray);
+			this.laplacian(gray);
+			this.gauss_laplacian(gray);
 			gray.delete();
 		},
 		noise(img){
@@ -68,6 +73,71 @@ const app = Vue.createApp({
 					
 				}
 			}
+		},
+		robert(img) {
+			let dstx = new cv.Mat(); 
+			let dsty = new cv.Mat(); 
+			let kernelx = cv.matFromArray(2, 2, cv.CV_32F, [1, 0, 0, -1]);
+			let kernely = cv.matFromArray(2, 2, cv.CV_32F, [0, 1, -1, 0]);
+			// filter 2d solo me ayuda recorriendo la matriz y 
+			// haciendo la convolucion con el kernel
+			// si no toca hacer el doble for
+			cv.filter2D(img, dstx, cv.CV_8U, kernelx);
+			cv.filter2D(img, dsty, cv.CV_8U, kernely);
+			let robert = new cv.Mat();
+			cv.add(dstx, dsty, robert);
+			cv.imshow('robert', robert); 
+			dstx.delete();
+			dsty.delete();
+			kernelx.delete();
+			kernely.delete();
+			robert.delete();
+		},
+		prewitt(img) {
+			let dstx = new cv.Mat();
+			let dsty = new cv.Mat();
+			let kernelx = cv.matFromArray(3, 3, cv.CV_32F, [-1, 0, 1, -1, 0, 1, -1, 0, 1]);
+			let kernely = cv.matFromArray(3, 3, cv.CV_32F, [-1, -1, -1, 0, 0, 0, 1, 1, 1]);
+			cv.filter2D(img, dstx, cv.CV_8U, kernelx);
+			cv.filter2D(img, dsty, cv.CV_8U, kernely);
+			let robert = new cv.Mat();
+			cv.add(dstx, dsty, robert);
+			cv.imshow('prewitt', robert);
+			dstx.delete();
+			dsty.delete();
+			kernelx.delete();
+			kernely.delete();
+			robert.delete();
+		},
+		sobel(img){
+			let sobelx = new cv.Mat();
+			let sobely = new cv.Mat();
+			cv.Sobel(img, sobelx, cv.CV_64F, 1, 0, 5, 1, 0, cv.BORDER_DEFAULT);
+			cv.Sobel(img, sobely, cv.CV_64F, 0, 1, 5, 1, 0, cv.BORDER_DEFAULT);
+			let sobel = new cv.Mat();
+			cv.add(sobelx, sobely, sobel);
+			cv.imshow('sobel', sobel); 
+			sobelx.delete();
+			sobely.delete();
+			sobel.delete();
+
+		},
+		laplacian(img){
+			let dst = new cv.Mat();
+			cv.Laplacian(img, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
+			cv.imshow('laplacian', dst);
+			dst.delete();
+		},
+		gauss_laplacian(src){
+			//gaus normal
+			let dst = new cv.Mat();
+			let kernel_size = new cv.Size(3, 3);
+			cv.GaussianBlur(src, dst, kernel_size, 0, 0, cv.BORDER_DEFAULT);
+			let lap = new cv.Mat();
+			cv.Laplacian(dst, lap, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
+			cv.imshow("log",lap);
+			dst.delete();
+			lap.delete();
 		},
 		mean(img){
 			let result = new cv.Mat(img.rows, img.cols, img.type());
@@ -169,5 +239,6 @@ const app = Vue.createApp({
 			complexI.delete();
 			magI.delete();
 		},
+		
 	},
 });
