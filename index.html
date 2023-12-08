@@ -70,8 +70,10 @@
                 <input-value type="number" @value="mean_kernel_size=$event" title="Mean kernel size" step="2" min="1"></input-value>
                 <input-value type="number" @value="median_kernel_size=$event" title="Median kernel size" step="2" min="1"></input-value>
                 <input-value type="number" @value="gauss_kernel_size=$event" title="Gauss kernel size" step="2" min="1"></input-value>
+                <input-value type="number" @value="fourier_kernel_size=$event" title="Fourier kernel size" step="2" min="1"></input-value>
                 <input-value type="number" @value="pnoise=$event" title="Probability to add noise" step="0.1" min="0"></input-value>
-                <input-value type="checkbox" @value="rgb=$event" title="Try RGB" min="true"></input-value>
+                <input-value type="checkbox" @value="rgb=$event" title="Try RGB" min="false"></input-value>
+                <input-value type="checkbox" @value="with_noise=$event" title="Edge with noise" min="false"></input-value>
             </div>
         </div>
     </div>

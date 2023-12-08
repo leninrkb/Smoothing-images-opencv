@@ -5,9 +5,11 @@ const app = Vue.createApp({
 			mean_kernel_size: 1,
 			median_kernel_size: 1,
 			gauss_kernel_size: 1,
+			fourier_kernel_size: 1,
 			img_element: null,
 			pnoise: 0,
-			rgb: true
+			rgb: false,
+			with_noise: false
 		}
 	},
 	mounted(){
@@ -43,24 +45,29 @@ const app = Vue.createApp({
 			this.mean(img);
 			this.median(img);
 			this.gauss(img);
-			this.fourier(img);
+			// this.fourier(img);
 			img.delete();
 		},
 		smoothing_gray(img) {
 			let gray = new cv.Mat();
 			cv.cvtColor(img, gray, cv.COLOR_RGBA2GRAY);
+			let gray_copy = gray.clone();
 			this.noise(gray);
 			cv.imshow("noise", gray);
 			this.mean(gray);
 			this.median(gray);
 			this.gauss(gray);
 			// this.fourier(gray);
+			if (!this.with_noise){
+				gray = gray_copy;
+			}
 			this.robert(gray);
 			this.prewitt(gray);
 			this.sobel(gray);
 			this.laplacian(gray);
 			this.gauss_laplacian(gray);
 			gray.delete();
+			gray_copy.delete();
 		},
 		noise(img){
 			p = 1 - this.pnoise;
@@ -198,7 +205,11 @@ const app = Vue.createApp({
 			let result = new cv.Mat();
 			let ksize = new cv.Size(this.gauss_kernel_size, this.gauss_kernel_size);
 			cv.GaussianBlur(img, result, ksize, 0, 0, cv.BORDER_DEFAULT);
-			cv.imshow("gauss",result);
+			cv.imshow("gauss", result);
+			result = new cv.Mat();
+			ksize = new cv.Size(this.fourier_kernel_size, this.fourier_kernel_size);
+			cv.GaussianBlur(img, result, ksize, 0, 0, cv.BORDER_DEFAULT);
+			cv.imshow("fourier", result);
 			result.delete();
 		},
 		fourier(src) {
